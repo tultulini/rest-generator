@@ -1,0 +1,26 @@
+{
+  "name": "rest-generator",
+  "version": "1.0.0",
+  "description": "util for generating rest resource code",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "babel . --out-dir .compiled --source-maps --watch --ignore node_modules"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tultulini/rest-generator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tultulini/rest-generator/issues"
+  },
+  "homepage": "https://github.com/tultulini/rest-generator#readme",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "path": "^0.12.7",
+    "propert": "^1.0.40"
+  }
+}
