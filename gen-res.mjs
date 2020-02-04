@@ -1,8 +1,8 @@
 import { getArg } from "./src/args-util.mjs";
 import fs from 'fs'
-import { join } from 'path'
+import { join, dirname, resolve as resolveCurrentDir } from 'path'
 import { createInterface } from 'readline'
-
+const RESOURCE_NAME_KEY = '__resource_name__'
 const argOptions = {
     Name: {
         full: '--name', short: '-n',
@@ -38,10 +38,14 @@ function createResource(resourceName, path) {
     if (fs.existsSync(restPath)) {
         allowOverride(restPath).then(allowed => {
             console.log(`allowed: ${allowed}`)
+            if (allowed) {
+                generateResource(restPath, resourceName)
+            }
         })
     }
     else {
         fs.mkdirSync(restPath, { recursive: true })
+        generateResource(restPath, resourceName)
     }
 }
 
@@ -60,4 +64,18 @@ function allowOverride(path) {
             })
     })
 
+}
+
+function generateResource(restPath, resourceName) {
+    const templatesDir = join(resolveCurrentDir(), 'templates')
+
+    fs.readdirSync(templatesDir).forEach(file => {
+        const templateFilePath = join(templatesDir, file)
+        var re = new RegExp(RESOURCE_NAME_KEY, 'g')
+        const content = fs.readFileSync(templateFilePath).toString().replace(re, resourceName)
+        //console.log(`${file} content:\r\n${content}`)
+        const targetFilePath = join(restPath, file)
+        fs.writeFileSync(targetFilePath, content)
+
+    });
 }
